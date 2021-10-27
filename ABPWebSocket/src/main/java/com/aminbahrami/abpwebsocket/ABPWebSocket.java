@@ -178,7 +178,7 @@ public class ABPWebSocket
 						}
 					}
 				}
-			}).on(Socket.EVENT_ERROR,new Emitter.Listener()
+			}).on(Socket.EVENT_CONNECT_ERROR,new Emitter.Listener()
 			{
 				
 				@Override
@@ -191,7 +191,7 @@ public class ABPWebSocket
 						iOnErrorListener.onError(args[0].toString());
 					}
 				}
-			}).on(Socket.EVENT_RECONNECT_FAILED,new Emitter.Listener()
+			}).on(Socket.EVENT_CONNECT_ERROR,new Emitter.Listener()
 			{
 				@Override
 				public void call(Object... args)
