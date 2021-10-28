@@ -279,6 +279,16 @@ public class ABPWebSocket
 		return this;
 	}
 	
+	public void sendMessage(String name,String message)
+	{
+		log("Request JSON: "+message);
+		
+		if(isConnected())
+		{
+			this.socket.emit(name,message);
+		}
+	}
+	
 	public void sendMessage(String message)
 	{
 		log("Request JSON: "+message);
