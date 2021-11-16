@@ -1,7 +1,10 @@
 package com.aminbahrami.abpwebsocket;
 
+import android.content.Context;
 import android.util.Log;
+import android.webkit.WebView;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
@@ -18,7 +21,9 @@ import javax.net.ssl.X509TrustManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 
 public class ABPWebSocket
@@ -76,8 +81,22 @@ public class ABPWebSocket
 			SSLContext mySSlContext=SSLContext.getInstance("TLS");
 			mySSlContext.init(null,trustAllCerts,null);
 			
+			final String userAgent=System.getProperty("http.agent");
 			
 			OkHttpClient okHttpClient=new OkHttpClient.Builder()
+					.addInterceptor(new Interceptor()
+					{
+						@Override
+						public Response intercept(Chain chain) throws IOException
+						{
+							return chain.proceed(
+									chain.request()
+											.newBuilder()
+											.header("User-Agent",userAgent)
+											.build()
+							);
+						}
+					})
 					.hostnameVerifier(myHostnameVerifier)
 					.sslSocketFactory(mySSlContext.getSocketFactory(),new X509TrustManager()
 					{
